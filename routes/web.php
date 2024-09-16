@@ -2,6 +2,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MalfunctionsController;
+use App\Http\Controllers\PortfolioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,14 +28,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
+    
     Route::get('/malfunctions', [MalfunctionsController::class, 'index'])->name('malfunctions.index');
-
+    
+    Route::middleware(['admin'])->group(function () {
     Route::get('/malfunctions/create', [MalfunctionsController::class, 'create'])->name('malfunctions.create');
     Route::get('/malfunctions/{malfunction}/edit', [MalfunctionsController::class, 'edit'])->name('malfunctions.edit');
     Route::post('/malfunctions', [MalfunctionsController::class, 'store'])->name('malfunctions.store');
     Route::put('/malfunctions/{malfunction}', [MalfunctionsController::class, 'update'])->name('malfunctions.update');
     Route::delete('/malfunctions/{malfunction}', [MalfunctionsController::class, 'destroy'])->name('malfunctions.destroy');
+    });
 });
 
 require __DIR__.'/auth.php';
