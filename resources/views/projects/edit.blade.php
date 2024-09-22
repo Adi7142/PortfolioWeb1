@@ -104,62 +104,63 @@
 <body>
 
 
-    <form method="POST" action="{{ route('malfunctions.update', $malfunction) }}">
+    <form method="POST" action="{{ route('projects.update', $project->id) }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <h1>Project Wijzigen</h1>
-        <label for="machine_id">Machine:</label>
-        <select name="machine_id" id="machine_id">
-            @foreach($machines as $machine)
-                <option value="{{ $machine->id }}" {{ $machine->id == $malfunction->machine_id ? 'selected' : '' }}>
-                    {{ $machine->name }}
+    
+        <!-- Tag Selection -->
+        <label for="tag_id">Tag:</label>
+        <select name="tag_id" id="tag_id">
+            @foreach($tags as $tag)
+                <option value="{{ $tag->id }}" {{ $tag->id == $project->tag_id ? 'selected' : '' }}>
+                    {{ $tag->name }}
                 </option>
             @endforeach
         </select>
-
         <br>
-
-        <label for="status_id">Status:</label>
-        <select name="status_id" id="status_id">
-            @foreach($statuses as $status)
-                <option value="{{ $status->id }}" {{ $status->id == $malfunction->status_id ? 'selected' : '' }}>
-                    {{ $status->name }}
-                </option>
-            @endforeach
-        </select>
-
+    
+        <!-- Display Current Image -->
+        @if($project->image)
+            <div>
+                <label>Huidige Afbeelding:</label>
+                <img src="{{ asset('img/' . $project->image) }}" alt="Project Image" style="width:200px; height:auto;">
+            </div>
+        @endif
+    
+        <label for="title">Titel:</label>
+        <textarea name="title" id="title">{{ $project->title }}</textarea>
+    
         <br>
-
-        <label for="user_id">Medewerker:</label>
-        <select name="user_id" id="user_id">
-            <option value="" selected>Selecteer Medewerker</option>
-            @foreach($users as $user)
-                <option value="{{ $user->id }}" {{ $user->id == $malfunction->user_id ? 'selected' : '' }}>
-                    {{ $user->name }}
-                </option>
-            @endforeach
-        </select>
-
-        <br>
-
+    
         <label for="description">Beschrijving:</label>
-        <textarea name="description" id="description">{{ $malfunction->description }}</textarea>
-
+        <textarea name="description" id="description">{{ $project->description }}</textarea>
+    
         <br>
-
-        <label for="date_finished">Datum Afgehandeld:</label>
-        <input type="datetime-local" name="date_finished" value="{{ $malfunction->date_finished ? $malfunction->date_finished->format('Y-m-d\TH:i') : '' }}">
-
+    
+        <label for="image">Nieuwe Afbeelding:</label>
+        <input type="file" name="image" id="image">
+    
         <br>
-
+    
         <button type="submit">Opslaan</button>
-
-        <form method="post" action="{{ route('malfunctions.destroy', $malfunction) }}">
-            @csrf
-            @method('DELETE')
-            <button type="submit">Delete Project</button>
-        </form>
     </form>
+    
+    <form method="POST" action="{{ route('projects.destroy', $project->id) }}">
+        @csrf
+        @method('DELETE')
+    
+        <label for="confirm">Type "{{ $project->title }}" to confirm:</label>
+        <input type="text" name="confirm" id="confirm" required>
+        
+        @error('confirm')
+            <div style="color: red;">{{ $message }}</div>
+        @enderror
+    
+        <button type="submit">Delete Project</button>
+    </form>
+    
+    
     
     
     

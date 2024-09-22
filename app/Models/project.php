@@ -5,26 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Malfunction extends Model
+class project extends Model
 {
     use HasFactory;
-
     protected $fillable = [
-        'machine_id',
-        'status_id',
-        'user_id',
+        'tag_id',
+        'title',
         'description',
-        'finished_at',
+        'image',
     ];
 
-    public function machine()
+    public function tag()
     {
-        return $this->belongsTo(Machine::class);
-    }
-
-    public function status()
-    {
-        return $this->belongsTo(Status::class);
+        return $this->belongsTo(tag::class);
     }
 
     public function user()

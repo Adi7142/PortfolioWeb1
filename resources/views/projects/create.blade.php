@@ -96,45 +96,77 @@
             input[type="submit"]:hover {
                 background-color: #c0392b; /* Darker red on hover */
             }
+
+            input[type="text"] {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 16px;
+                border: none;
+                border-radius: 5px;
+                background-color: #2d2d2d; /* Dark input background */
+                color: #f1f1f1; /* Light text color */
+                font-size: 1rem;
+            }
+
+            input[type="text"]:focus {
+                outline: none;
+                border: 2px solid #f39c12; /* Focus color in gold */
+            }
+
         </style>
     </head>
-    <form method="POST" action="{{ route('malfunctions.store') }}">
-        @csrf
-        <h1>Project Aanmaken</h1>
-
-        <label for="machine_id">Machine:</label>
-        <select name="machine_id" id="machine_id">
-            @foreach($machines as $machine)
-                <option value="{{ $machine->id }}">{{ $machine->name }}</option>
-            @endforeach
-        </select>
-
-        <br>
-
-        <label for="status_id">Status:</label>
-        <select name="status_id" id="status_id">
-            @foreach($statuses as $status)
-                <option value="{{ $status->id }}">{{ $status->name }}</option>
-            @endforeach
-        </select>
-
-        <br>
-
-        <label for="user_id">Medewerker:</label>
-        <select name="user_id" id="user_id">
-            <option value="" selected>Selecteer Medewerker</option>
-            @foreach($users as $user)
-                <option value="{{ $user->id }}">{{ $user->name }}</option>
-            @endforeach
-        </select>
-
-        <br>
-
-        <label for="description">Beschrijving:</label>
-        <textarea name="description" id="description"></textarea>
-
-        <br>
-
-        <button type="submit">Opslaan</button>
-    </form>
+        <form method="POST" action="{{ route('projects.store') }}" enctype="multipart/form-data">
+            @csrf
+            <h1>Project Aanmaken</h1>
+    
+            <!-- Tag Selection -->
+            <label for="tag_id">Tag:</label>
+            <select name="tag_id" id="tag_id">
+                @foreach($tags as $tag)
+                    <option value="{{ $tag->id }}" {{ old('tag_id') == $tag->id ? 'selected' : '' }}>
+                        {{ $tag->name }}
+                    </option>
+                @endforeach
+            </select>
+    
+            @error('tag_id')
+                <div style="color: red;">{{ $message }}</div>
+            @enderror
+    
+            <br>
+    
+            <!-- Title -->
+            <label for="title">Titel:</label>
+            <input type="text" name="title" id="title" value="{{ old('title') }}">
+            
+            @error('title')
+                <div style="color: red;">{{ $message }}</div>
+            @enderror
+    
+            <br>
+    
+            <!-- Image -->
+            <label for="image">Afbeelding:</label>
+            <input type="file" name="image" id="image">
+            
+            @error('image')
+                <div style="color: red;">{{ $message }}</div>
+            @enderror
+    
+            <br>
+    
+            <!-- Description -->
+            <label for="description">Beschrijving:</label>
+            <textarea name="description" id="description">{{ old('description') }}</textarea>
+            
+            @error('description')
+                <div style="color: red;">{{ $message }}</div>
+            @enderror
+    
+            <br>
+    
+            <button type="submit">Opslaan</button>
+        </form>
+    
+    </body>
 </html>

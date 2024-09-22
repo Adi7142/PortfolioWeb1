@@ -2,7 +2,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MalfunctionsController;
-use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\ProjectsController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,8 +20,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Alleen als je ingelogd kan je hier in komen
-Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
@@ -28,16 +27,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
-    Route::get('/malfunctions', [MalfunctionsController::class, 'index'])->name('malfunctions.index');
-    
-    Route::middleware(['admin'])->group(function () {
-    Route::get('/malfunctions/create', [MalfunctionsController::class, 'create'])->name('malfunctions.create');
-    Route::get('/malfunctions/{malfunction}/edit', [MalfunctionsController::class, 'edit'])->name('malfunctions.edit');
-    Route::post('/malfunctions', [MalfunctionsController::class, 'store'])->name('malfunctions.store');
-    Route::put('/malfunctions/{malfunction}', [MalfunctionsController::class, 'update'])->name('malfunctions.update');
-    Route::delete('/malfunctions/{malfunction}', [MalfunctionsController::class, 'destroy'])->name('malfunctions.destroy');
-    });
-});
+
+    Route::get('/projects', [ProjectsController::class, 'index'])->name('projects.index');
+
+    //Alleen als je ingelogd als admin kan je hier in komen
+    Route::group(['middleware' => 'Admin'], function () {
+
+        Route::get('/projects/create', [ProjectsController::class, 'create'])->name('projects.create');
+        Route::get('/projects/{project}/edit', [ProjectsController::class, 'edit'])->name('projects.edit');
+        Route::post('/projects', [ProjectsController::class, 'store'])->name('projects.store');
+        Route::put('/projects/{project}', [ProjectsController::class, 'update'])->name('projects.update');
+        Route::delete('/projects/{project}', [ProjectsController::class, 'destroy'])->name('projects.destroy');
+    });    
 
 require __DIR__.'/auth.php';

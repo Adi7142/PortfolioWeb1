@@ -19,7 +19,7 @@
             </div> --}}
 
             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                <x-nav-link :href="route('malfunctions.index')" :active="request()->routeIs('index')">
+                <x-nav-link :href="route('projects.index')" :active="request()->routeIs('index')">
                     {{ __('Portfolio Pagina') }}
                 </x-nav-link>
             </div>

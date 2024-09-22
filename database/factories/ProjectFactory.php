@@ -1,21 +1,21 @@
 <?php
 
 namespace Database\Factories;
-
-use App\Models\Malfunction;
+use App\Models\Project;
+use App\Models\tag;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class MalfunctionFactory extends Factory
+class ProjectFactory extends Factory
 {
-    protected $model = Malfunction::class;
+    protected $model = Project::class;
 
     public function definition()
     {
         return [
-            'machine_id' => \App\Models\Machine::factory(),
-            'status_id' => \App\Models\Status::factory(),
-            'user_id' => \App\Models\User::factory(),
+            'title' => $this->faker->sentence,
             'description' => $this->faker->sentence,
+            'image' => $this->faker->sentence,
+            'tag_id' => tag::inRandomOrder()->first()->id,
             // andere velden toevoegen zoals date_finished indien nodig
         ];
     }

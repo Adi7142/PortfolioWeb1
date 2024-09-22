@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Portfolio</title>
-    <a href="{{ route('malfunctions.create') }}">Nieuw Project Toevoegen</a>
+    <a href="{{ route('projects.create') }}">Nieuw Project Toevoegen</a>
 
 <style>
  * {
@@ -21,9 +21,9 @@ body {
     color: #f1f1f1; /* Light Text for Contrast */
     padding: 20px;
     background-image: url('img/callODB6.webp');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
 }
 
 h1 {
@@ -134,25 +134,25 @@ td a:hover {
     <table>
         <thead>
             <tr>
-                <th>Datum van Storing</th>
-                <th>Description van Storing</th>
-                <th>Naam van de Machine</th>
-                <th>Status van de Storing</th>
-                <th>Naam van de Medewerker</th>
+                <th>tag</th>
+                <th>image</th>
+                <th>Titel</th>
+                <th>description</th>
                 <th>Edit<th>
             </tr>
         </thead>
         <tbody>
-            @foreach($malfunctions as $malfunction)
-                <tr class="{{ $malfunction->status->severity }}">
-                    <td>{{ $malfunction->created_at }}</td>
-                    <td>{{ $malfunction->description }}</td>
-                    <td>{{ $malfunction->machine->name }}</td>
-                    <td>{{ $malfunction->status->name }}</td>
-                    <td>{{ optional($malfunction->user)->name }}</td>
+            @foreach($projects as $project)
+                <td>{{ $project->tag->name }}</td>
+                <td>
+                    <!-- Display the image -->
+                    <img src="{{ asset('img/' . $project->image) }}" alt="Project Image" style="width:100px; height:auto;">
+                </td>
+                <td>{{ $project->title }}</td>
+                <td>{{ $project->description }}</td>
                 <div>
                     <td>
-                        <a href="{{ route('malfunctions.edit', $malfunction) }}">Aanpassen</a>
+                        <a href="{{ route('projects.edit', $project->id) }}">Aanpassen</a>
                     </td>
                 </div>
                 </tr>
